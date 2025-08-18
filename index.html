@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>STAR TOWN 2.0 Map</title>
+  <style>
+    body {
+      font-family: "Tahoma", sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+    }
+    .map-container {
+      position: relative;
+      display: inline-block;
+    }
+    .point {
+      position: absolute;
+      width: 21px;
+      height: 21px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      cursor: pointer;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 10;
+    }
+    .popup button {
+      margin-top: 10px;
+      padding: 5px 15px;
+      border: none;
+      border-radius: 5px;
+      background: crimson;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🗺️ จุด Spuad  STAR TOWN 2.0 (ในเมือง) 🗺️</h2>
+<div class="map-container">
+  <img src="map.png" alt="STAR TOWN 2.0" width="900" id="map">
+</div>
+
+<div class="popup" id="popup">
+  <p id="popup-text"></p>
+  <button onclick="closePopup()">ปิด</button>
+</div>
+
+<script>
+  // ตัวอย่างตำแหน่งจุด (ต้องใส่เองตามแผนที่จริง)
+  // ใช้ top/left เป็น pixel หรือเปอร์เซ็นต์ก็ได้
+  const points = [
+  {id: 1, top:175 , left: 42},
+  {id: 2, top: 180, left: 62},
+  {id: 3, top: 69, left: 134},
+  {id: 4, top: 38, left: 225},
+  {id: 5, top: 207, left: 65},
+  {id: 6, top: 160, left: 152},
+  {id: 7, top: 140, left: 168},
+  {id: 8, top: 108, left: 214},
+  {id: 9, top: 80, left: 296},
+  {id: 10, top: 40, left: 440},
+  {id: 11, top: 37, left: 475},
+  {id: 12, top: 24, left: 597},
+  {id: 13, top: 45, left: 665},
+  {id: 14, top: 58, left: 568},
+  {id: 15, top: 150, left: 230},
+  {id: 16, top: 210, left: 125},
+  {id: 17, top: 228, left: 84},
+  {id: 18, top: 254, left: 180},
+  {id: 19, top: 232, left: 202},
+  {id: 20, top: 338, left: 145},
+  {id: 21, top: 270, left: 199},
+  {id: 22, top: 262, left: 224},
+  {id: 23, top: 188, left: 211},
+  {id: 24, top: 182, left: 242},
+  {id: 25, top: 213, left: 266},
+  {id: 26, top: 255, left: 248},
+  {id: 27, top: 166, left: 296},
+  {id: 28, top: 146, left: 320},
+  {id: 29, top: 154, left: 400},
+  {id: 30, top: 128, left: 438},
+  {id: 31, top: 104, left: 446},
+  {id: 32, top: 0, left: 0},
+  {id: 33, top: 0, left: 0},
+  {id: 34, top: 0, left: 0},
+  {id: 35, top: 0, left: 0},
+  {id: 36, top: 0, left: 0},
+  {id: 37, top: 0, left: 0},
+  {id: 38, top: 0, left: 0},
+  {id: 39, top: 0, left: 0},
+  {id: 40, top: 0, left: 0},
+  {id: 41, top: 0, left: 0},
+  {id: 42, top: 0, left: 0},
+  {id: 43, top: 0, left: 0},
+  {id: 44, top: 0, left: 0},
+  {id: 45, top: 0, left: 0},
+  {id: 46, top: 0, left: 0},
+  {id: 47, top: 0, left: 0},
+  {id: 48, top: 0, left: 0},
+  {id: 49, top: 0, left: 0},
+  {id: 50, top: 0, left: 0},
+  {id: 51, top: 0, left: 0},
+  {id: 52, top: 0, left: 0},
+  {id: 53, top: 0, left: 0},
+  {id: 54, top: 0, left: 0},
+  {id: 55, top: 0, left: 0},
+  {id: 56, top: 0, left: 0},
+  {id: 57, top: 0, left: 0},
+  {id: 58, top: 0, left: 0},
+  {id: 59, top: 0, left: 0},
+  {id: 60, top: 0, left: 0},
+  {id: 61, top: 0, left: 0},
+  {id: 62, top: 0, left: 0},
+  {id: 63, top: 0, left: 0},
+  {id: 64, top: 0, left: 0},
+  {id: 65, top: 0, left: 0},
+  {id: 66, top: 0, left: 0},
+  {id: 67, top: 0, left: 0},
+  {id: 68, top: 0, left: 0},
+  {id: 69, top: 0, left: 0},
+  {id: 70, top: 0, left: 0},
+  {id: 71, top: 0, left: 0},
+  {id: 72, top: 0, left: 0},
+  {id: 73, top: 0, left: 0},
+  {id: 74, top: 0, left: 0},
+  {id: 75, top: 0, left: 0},
+  {id: 76, top: 0, left: 0},
+  {id: 77, top: 0, left: 0},
+  {id: 78, top: 0, left: 0},
+  {id: 79, top: 0, left: 0},
+  {id: 80, top: 0, left: 0},
+  {id: 81, top: 0, left: 0},
+  {id: 82, top: 0, left: 0},
+  {id: 83, top: 0, left: 0},
+  {id: 84, top: 0, left: 0},
+  {id: 85, top: 0, left: 0},
+  {id: 86, top: 0, left: 0},
+  {id: 87, top: 0, left: 0},
+  {id: 88, top: 0, left: 0},
+  {id: 89, top: 0, left: 0},
+  {id: 90, top: 0, left: 0},
+  {id: 91, top: 0, left: 0},
+  {id: 92, top: 0, left: 0},
+  {id: 93, top: 0, left: 0},
+  {id: 94, top: 0, left: 0},
+  {id: 95, top: 0, left: 0},
+  {id: 96, top: 0, left: 0},
+  {id: 97, top: 0, left: 0},
+  {id: 98, top: 0, left: 0},
+  {id: 99, top: 0, left: 0},
+  {id: 100, top: 0, left: 0},
+  {id: 101, top: 0, left: 0},
+  {id: 102, top: 0, left: 0},
+  {id: 103, top: 0, left: 0},
+  {id: 104, top: 0, left: 0},
+  {id: 105, top: 0, left: 0},
+  {id: 106, top: 0, left: 0},
+  {id: 107, top: 0, left: 0},
+  {id: 108, top: 0, left: 0},
+  {id: 109, top: 0, left: 0},
+  {id: 110, top: 0, left: 0},
+  {id: 111, top: 0, left: 0},
+  {id: 112, top: 0, left: 0},
+  {id: 113, top: 0, left: 0},
+  {id: 114, top: 0, left: 0},
+  {id: 115, top: 0, left: 0},
+  {id: 116, top: 0, left: 0},
+  {id: 117, top: 0, left: 0},
+  {id: 118, top: 0, left: 0},
+  {id: 119, top: 0, left: 0},
+  {id: 120, top: 0, left: 0},
+  {id: 121, top: 0, left: 0},
+  {id: 122, top: 0, left: 0},
+  {id: 123, top: 0, left: 0},
+  {id: 124, top: 0, left: 0},
+  {id: 125, top: 0, left: 0},
+  {id: 126, top: 0, left: 0},
+  {id: 127, top: 0, left: 0},
+  {id: 128, top: 0, left: 0},
+  {id: 129, top: 0, left: 0},
+  {id: 130, top: 0, left: 0},
+  {id: 131, top: 0, left: 0},
+  {id: 132, top: 0, left: 0},
+  {id: 133, top: 0, left: 0},
+  {id: 134, top: 0, left: 0},
+  {id: 135, top: 0, left: 0},
+  {id: 136, top: 0, left: 0},
+  {id: 137, top: 0, left: 0},
+  {id: 138, top: 0, left: 0},
+  {id: 139, top: 0, left: 0},
+  {id: 140, top: 0, left: 0},
+  {id: 141, top: 0, left: 0},
+  {id: 142, top: 0, left: 0},
+  {id: 143, top: 0, left: 0},
+  {id: 144, top: 0, left: 0},
+  {id: 145, top: 0, left: 0},
+  {id: 146, top: 0, left: 0},
+  {id: 147, top: 0, left: 0},
+  {id: 148, top: 0, left: 0},
+  {id: 149, top: 0, left: 0},
+  {id: 150, top: 0, left: 0},
+  {id: 151, top: 0, left: 0},
+  {id: 152, top: 0, left: 0},
+  {id: 153, top: 0, left: 0},
+  {id: 154, top: 0, left: 0},
+  {id: 155, top: 0, left: 0},
+  {id: 156, top: 0, left: 0},
+  {id: 157, top: 0, left: 0},
+  {id: 158, top: 0, left: 0},
+  {id: 159, top: 0, left: 0},
+  {id: 160, top: 0, left: 0},
+  {id: 161, top: 0, left: 0},
+  {id: 162, top: 0, left: 0},
+  {id: 163, top: 0, left: 0},
+  {id: 164, top: 0, left: 0},
+  {id: 165, top: 0, left: 0},
+  {id: 166, top: 0, left: 0},
+  {id: 167, top: 0, left: 0},
+  {id: 168, top: 0, left: 0},
+  {id: 169, top: 0, left: 0},
+  {id: 170, top: 0, left: 0},
+  {id: 171, top: 0, left: 0},
+  {id: 172, top: 0, left: 0},
+  {id: 173, top: 0, left: 0},
+  {id: 174, top: 0, left: 0},
+  {id: 175, top: 0, left: 0},
+  {id: 176, top: 0, left: 0},
+  {id: 177, top: 0, left: 0},
+  {id: 178, top: 0, left: 0},
+  {id: 179, top: 0, left: 0},
+  {id: 180, top: 0, left: 0},
+  {id: 181, top: 0, left: 0},
+  {id: 182, top: 0, left: 0},
+  {id: 183, top: 0, left: 0},
+  {id: 184, top: 0, left: 0}
+  ];
+
+  // เก็บชื่อสถานที่
+  const places = {
+    1: "ปั้มแลนด์ม่วง ",
+    2: "ตึกกระจก",
+    3: "ลานกิจกรรม",
+    4: "แลนด์เขียว",
+    5: "แลนด์ม่วง",
+    6: "สุสาน",
+    7: "4 แยกสุสาน",
+    8: "หน้าสนามกอล์ฟ",
+    9: "หลังสนามกอล์ฟ",
+    10: "แลนด์ซิวเวอร์",
+    11: "เชฟเก่า",
+    12: "งัดร้านคลินตั้น",
+    13: "ปั้มคลินตั้น",
+    14: "ธนาคารใหญ่",
+    15: "มอนิ่งวูตตึกใน",
+    16: "โค้งเบซิตี้",
+    17: "บ้านข้างแลนด์ม่วง",
+    18: "ถนนเบซิตี้",
+    19: "ผับ",
+    20: "สวนสนุก",
+    21: "หน้าสวนสนุก",
+    22: "อุโมงตึกรุ้ง",
+    23: "4 แยกมอนิ่งวูต",
+    24: "มอนิ่งวูตตึกนอก",
+    25: "โรงหนัง",
+    26: "ตึกรุ้ง",
+    27: "ตึกทรู",
+    28: "จกแคปวอท",
+    29: "สภาเก่า",
+    30: "อู่กลางเมือง",
+    31: "กสิกรหลังอู่",
+    32: "อุโมงพารากอน",
+    33: "",
+    34: "",
+    35: "",
+    36: "",
+    37: "",
+    38: "",
+    39: "",
+    40: "",
+    41: "",
+    42: "",
+    43: "",
+    44: "",
+    45: "",
+    46: "",
+    47: "",
+    48: "",
+    49: "",
+    50: "",
+    51: "",
+    52: "",
+    53: "",
+    54: "",
+    55: "",
+    56: "",
+    57: "",
+    58: "",
+    59: "",
+    60: "",
+    61: "",
+    62: "",
+    63: "",
+    64: "",
+    65: "",
+    66: "",
+    67: "",
+    68: "",
+    69: "",
+    70: "",
+    71: "",
+    72: "",
+    73: "",
+    74: "",
+    75: "",
+    76: "",
+    77: "",
+    78: "",
+    79: "",
+    80: "",
+    81: "",
+    82: "",
+    83: "",
+    84: "",
+    85: "",
+    86: "",
+    87: "",
+    88: "",
+    89: "",
+    90: "",
+    91: "",
+    92: "",
+    93: "",
+    94: "",
+    95: "",
+    96: "",
+    97: "",
+    98: "",
+    99: "",
+    100: "",
+    101: "",
+    102: "",
+    103: "",
+    104: "",
+    105: "",
+    106: "",
+    107: "",
+    108: "",
+    109: "",
+    110: "",
+    111: "",
+    112: "",
+    113: "",
+    114: "",
+    115: "",
+    116: "",
+    117: "",
+    118: "",
+    119: "",
+    120: "",
+    121: "",
+    122: "",
+    123: "",
+    124: "",
+    125: "",
+    126: "",
+    127: "",
+    128: "",
+    129: "",
+    130: "",
+    131: "",
+    132: "",
+    133: "",
+    134: "",
+    135: "",
+    136: "",
+    137: "",
+    138: "",
+    139: "",
+    140: "",
+    141: "",
+    142: "",
+    143: "",
+    144: "",
+    145: "",
+    146: "",
+    147: "",
+    148: "",
+    149: "",
+    150: "",
+    151: "",
+    152: "",
+    153: "",
+    154: "",
+    155: "",
+    156: "",
+    157: "",
+    158: "",
+    159: "",
+    160: "",
+    161: "",
+    162: "",
+    163: "",
+    164: "",
+    165: "",
+    166: "",
+    167: "",
+    168: "",
+    169: "",
+    170: "",
+    171: "",
+    172: "",
+    173: "",
+    174: "",
+    175: "",
+    176: "",
+    177: "",
+    178: "",
+    179: "",
+    180: "",
+    181: "",
+    182: "",
+    183: "",
+    184: ""
+  };
+
+  // วาดจุดลงแผนที่
+  const mapContainer = document.querySelector(".map-container");
+  points.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "point";
+    div.style.top = p.top + "px";
+    div.style.left = p.left + "px";
+    div.innerText = p.id;
+    div.onclick = () => showInfo(p.id);
+    mapContainer.appendChild(div);
+  });
+
+  function showInfo(id) {
+    const popup = document.getElementById("popup");
+    const text = document.getElementById("popup-text");
+    text.innerText = "จุดที่ " + id + ": " + (places[id] || "ยังไม่มีข้อมูล");
+    popup.style.display = "block";
+  }
+
+  function closePopup() {
+    document.getElementById("popup").style.display = "none";
+  }
+</script>
+
+</body>
+</html>
