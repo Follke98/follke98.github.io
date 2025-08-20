@@ -3,13 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <title>STAR TOWN 2.0 Map</title>
+  <meta name="viewport" content="width=900, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <Nav>
+        <div class="container">
+<div class="nav-con">
+       
+        <div class="logo">
+            <a href="#">Spuad Star 2.0</a>
+        </div>
+    <div class="menu">
+        <li><a href="#Home">ในเมือง</a></li>
+        <li><a href="#hero">นอกเมือง</a></li>
+</div>
+</div>
+</div>
+</Nav>
+</div>
   <style>
+nav{
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5rem;
+     background-color: #7c04a0;
+}
+.nav-con{
+    display: flex;
+    justify-content: space-between;
+}
+.logo a{
+    font-size: 2rem;
+    color:#fff;
+    text-decoration: none;
+    align-items: center;
+}
+
+.menu{
+    display: flex;
+    list-style: none;
+    align-items: center;
+   
+}
+.menu li a{
+    border-radius: 30px;
+    transition: 0.3s ease;
+    padding: 10px 18px;
+
+}
+.menu li a:hover{
+    background: linear-gradient(135deg, #4f46e5 60%, #f43f5e 100%);
+}
+.menu li{
+    margin: 0 1rem;
+
+}
+.menu li a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+@keyframes scrollUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
     body {
       font-family: "Segoe UI", "Tahoma", sans-serif;
       background: linear-gradient(135deg, #e0e7ff 0%, #f0f0f0 100%);
       text-align: center;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
     h2 {
       color: #3b3b3b;
@@ -18,6 +88,11 @@
       letter-spacing: 1px;
       text-shadow: 0 2px 8px #bdbdbd;
     }
+     .map-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* เลื่อนเฉพาะส่วนนี้ */
+    overflow-y: hidden;
+  }
     .map-container {
       position: relative;
       display: inline-block;
@@ -27,12 +102,18 @@
       overflow: hidden;
       background: #fff;
       border: 5px solid #7a0f82;
+      
+      width: 900px; /* ขนาดจริงของแผนที่ */
+      height: auto;
+      margin: 0 auto;
     }
     .map-container img {
       border-radius: 12px;
       box-shadow: 0 2px 12px rgba(60,60,120,0.10);
       border: 2px solid #e0e7ff;
-      
+       width: 900px;
+      height: auto;
+       display: block;
     }
     .layout {
       display: flex;
@@ -42,16 +123,30 @@
       margin-top: 10px;
 }
 
-    .side-img {
-  width: 400px;
+.side-img.left {
+  position: fixed;
+  top: 50%;              /* กึ่งกลางแนวตั้ง */
+  left: 20px;            /* ระยะห่างจากขอบซ้าย */
+  transform: translateY(-50%); /* เลื่อนขึ้นครึ่งนึงให้พอดีกลาง */
+  width: 300px;          /* ปรับขนาดได้ตามต้องการ */
   height: auto;
-  border-radius: 0px;
-  filter: blur(5px);             /* 👈 เบลอปกติ */
-  transition: filter 0.2s ease;  /* 👈 ทำให้ค่อย ๆ ชัด */
+  filter: blur(5px);
+  transition: filter 0.2s ease;
+}
+
+.side-img.right {
+  position: fixed;
+  top: 50%;
+  right: 20px;           /* ระยะห่างจากขอบขวา */
+  transform: translateY(-50%);
+  width: 300px;
+  height: auto;
+  filter: blur(5px);
+  transition: filter 0.2s ease;
 }
 
 .side-img:hover {
-  filter: blur(0);               /* 👈 ชัดเมื่อ hover */
+  filter: blur(0);  /* 👈 ชัดเมื่อ hover */
 }
     .point {
       position: absolute;
@@ -118,28 +213,46 @@
   </style>
 </head>
 <body>
-
+<header id="Home">
 <h2>🗺️ จุด Spuad  STAR TOWN 2.0 (ในเมือง) 🗺️</h2>
 <div class="layout">
-  <img src="star 2.0" alt="Left Image" class="side-img">
-  
+  <img src="star 2.0" alt="Left Image" class="side-img left ">
+  <img src="Police.png" alt="Right Image" class="side-img right">
+  <div class="map-wrapper">
   <div class="map-container">
     <img src="map.png" alt="STAR TOWN 2.0" width="900" id="map">
   </div>
+  </div>
   
-  <img src="Police.png" alt="Right Image" class="side-img">
 </div>
-<h2> BY.ทีมสอบ Star2.0 </h2>
+<section id="hero">
+  <h2>🗺️ จุด Spuad  STAR TOWN 2.0 (นอกเมือง) 🗺️</h2>
+<div class="layout">
+  
+ 
+  
+  <div class="map-wrapper">
+  <div class="map-container">
+    
+    <img src="mapout.png" alt="STAR TOWN 2.0" width="900" id="map">
+  </div>
+  </div>
+</section>
+  
+ 
+</div>
 <div class="popup" id="popup">
   <p id="popup-text"></p>
   <button onclick="closePopup()">ปิด</button>
 </div>
 
+
+</header>
 <script>
   // ตัวอย่างตำแหน่งจุด (ต้องใส่เองตามแผนที่จริง)
   // ใช้ top/left เป็น pixel หรือเปอร์เซ็นต์ก็ได้
   const points = [
-  {id: 1, top:175 , left: 42},
+  {id: 1, top:175 , left: 42,},
   {id: 2, top: 180, left: 62},
   {id: 3, top: 69, left: 134},
   {id: 4, top: 38, left: 225},
@@ -516,14 +629,17 @@
   // วาดจุดลงแผนที่
   const mapContainer = document.querySelector(".map-container");
   points.forEach(p => {
-    const div = document.createElement("div");
-    div.className = "point";
-    div.style.top = p.top + "px";
-    div.style.left = p.left + "px";
-    div.innerText = p.id;
-    div.onclick = () => showInfo(p.id);
-    mapContainer.appendChild(div);
-  });
+  const div = document.createElement("div");
+  div.className = "point";
+  div.style.top = p.top + "px";
+  div.style.left = p.left + "px";
+  div.style.width = p.size + "px";
+  div.style.height = p.size + "px";
+  div.style.fontSize = (p.size * 0.6) + "px"; // ขนาดตัวเลขตามวงกลม
+  div.innerText = p.id;
+  div.onclick = () => showInfo(p.id);
+  mapContainer.appendChild(div);
+});
 
   function showInfo(id) {
     const popup = document.getElementById("popup");
