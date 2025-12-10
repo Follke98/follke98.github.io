@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>STAR TOWN 2.0 Map</title>
+  <meta name="viewport" content="width=900, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <Nav>
+        <div class="container">
+<div class="nav-con">
+       
+        <div class="logo">
+            <a href="#">Spuad Star 2.0</a>
+        </div>
+    <div class="menu">
+        <li><a href="https://follke98.github.io">ในเมือง</a></li>
+        <li><a href="#Home" target="_blank">
+  นอกเมือง
+</a></li>
+</div>
+</div>
+</div>
+</Nav>
+</div>
+  <style>
+nav{
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5rem;
+     background-color: #7c04a0;
+}
+.nav-con{
+    display: flex;
+    justify-content: space-between;
+}
+.logo a{
+    font-size: 2rem;
+    color:#fff;
+    text-decoration: none;
+    align-items: center;
+}
+
+.menu{
+    display: flex;
+    list-style: none;
+    align-items: center;
+   
+}
+.menu li a{
+    border-radius: 30px;
+    transition: 0.3s ease;
+    padding: 10px 18px;
+
+}
+.menu li a:hover{
+    background: linear-gradient(135deg, #4f46e5 60%, #f43f5e 100%);
+}
+.menu li{
+    margin: 0 1rem;
+
+}
+.menu li a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+@keyframes scrollUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+    body {
+      font-family: "Segoe UI", "Tahoma", sans-serif;
+      background: linear-gradient(135deg, #e0e7ff 0%, #f0f0f0 100%);
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    h2 {
+      color: #3b3b3b;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #bdbdbd;
+    }
+     .map-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* เลื่อนเฉพาะส่วนนี้ */
+    overflow-y: hidden;
+  }
+    .map-container {
+      position: relative;
+      display: inline-block;
+      margin: 30px auto 20px auto;
+      box-shadow: 0 8px 32px rgba(60,60,120,0.18);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+      border: 5px solid #7a0f82;
+      
+      width: 900px; /* ขนาดจริงของแผนที่ */
+      height: auto;
+      margin: 0 auto;
+    }
+    .map-container img {
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(60,60,120,0.10);
+      border: 2px solid #e0e7ff;
+       width: 900px;
+      height: auto;
+       display: block;
+    }
+    .layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;  /* ระยะห่างระหว่างรูปกับแผนที่ */
+      margin-top: 10px;
+}
+
+.side-img.left {
+  position: fixed;
+  top: 50%;              /* กึ่งกลางแนวตั้ง */
+  left: 20px;            /* ระยะห่างจากขอบซ้าย */
+  transform: translateY(-50%); /* เลื่อนขึ้นครึ่งนึงให้พอดีกลาง */
+  width: 300px;          /* ปรับขนาดได้ตามต้องการ */
+  height: auto;
+  filter: blur(5px);
+  transition: filter 0.2s ease;
+}
+
+.side-img.right {
+  position: fixed;
+  top: 50%;
+  right: 20px;           /* ระยะห่างจากขอบขวา */
+  transform: translateY(-50%);
+  width: 300px;
+  height: auto;
+  filter: blur(5px);
+  transition: filter 0.2s ease;
+}
+
+.side-img:hover {
+  filter: blur(0);  /* 👈 ชัดเมื่อ hover */
+}
+    .point {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: linear-gradient(135deg, #4f46e5 60%, #f43f5e 100%);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 13px;
+      font-weight: bold;
+      box-shadow: 0 0 12px 2px #6366f1a0;
+      border: 2px solid #fff;
+      transition: transform 0.18s, box-shadow 0.18s;
+      z-index: 2;
+    }
+    .point:hover {
+      transform: scale(1.18);
+      box-shadow: 0 0 24px 6px #f43f5e80;
+      background: linear-gradient(135deg, #f43f5e 60%, #4f46e5 100%);
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      background: linear-gradient(135deg, #fff 80%, #e0e7ff 100%);
+      padding: 28px 32px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(60,60,120,0.22);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+      min-width: 220px;
+      font-size: 1.15em;
+      color: #2d2d2d;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .popup.show {
+      pointer-events: auto;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .popup button {
+      margin-top: 18px;
+      padding: 7px 22px;
+      border: none;
+      border-radius: 7px;
+      background: linear-gradient(90deg, #6366f1 60%, #f43f5e 100%);
+      color: white;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 500;
+      box-shadow: 0 2px 8px #6366f140;
+      transition: background 0.18s;
+    }
+    .popup button:hover {
+      background: linear-gradient(90deg, #f43f5e 60%, #6366f1 100%);
+    }
+  </style>
+</head>
+<body>
+<header id="Home">
+<h2>🗺️ จุด Spuad  STAR TOWN 2.0 (นอกเมือง) 🗺️</h2>
+<div class="layout">
+  <img src="star 2.0" alt="Left Image" class="side-img left ">
+  <img src="Police.png" alt="Right Image" class="side-img right">
+  <div class="map-wrapper">
+  <div class="map-container">
+    <img src="mapout.png" alt="STAR TOWN 2.0" width="900" id="map">
+  </div>
+  </div>
+  
+</div>
+<h2> By.ทีมสอบStar 2.0 </h2>
+</section>
+  
+ 
+</div>
+<div class="popup" id="popup">
+  <p id="popup-text"></p>
+  <button onclick="closePopup()">ปิด</button>
+</div>
+
+
+</header>
+<script>
+  // ตัวอย่างตำแหน่งจุด (ต้องใส่เองตามแผนที่จริง)
+  // ใช้ top/left เป็น pixel หรือเปอร์เซ็นต์ก็ได้
+  const points = [
+  {id: 1, top:50 , left: 400,},
+  {id: 2, top: 82, left: 410},
+  {id: 3, top: 120, left: 360},
+  {id: 4, top: 170, left: 300},
+  {id: 5, top: 240, left: 220},
+  {id: 6, top: 240, left: 290},
+  {id: 7, top: 270, left: 280},
+  {id: 8, top: 310, left: 210},
+  {id: 9, top: 312, left: 306},
+  {id: 10, top: 380, left: 320,size:26},
+  {id: 11, top: 370, left: 230,size:26},
+  {id: 12, top: 450, left: 366,size:26},
+  {id: 13, top: 455, left: 270,size:26},
+  {id: 14, top: 420, left: 160,size:26},
+  {id: 15, top: 390, left: 90,size:26},
+  {id: 16, top: 495, left: 140,size:26},
+  {id: 17, top: 545, left: 130 ,size:26},
+  {id: 18, top: 510, left: 330},
+  {id: 19, top: 420, left: 395},
+  {id: 20, top: 510, left: 395},
+  {id: 21, top: 510, left: 450},
+  {id: 22, top: 465, left: 475},
+  {id: 23, top: 430, left: 450},
+  {id: 24, top: 430, left: 540},
+  {id: 25, top: 410, left: 590},
+  {id: 26, top: 420, left: 675},
+  {id: 27, top: 440, left: 610},
+  {id: 28, top: 475, left: 625},
+  {id: 29, top: 485, left: 660},
+  {id: 30, top: 465, left: 690},
+  {id: 31, top: 104, left: 446},
+  {id: 32, top: 146, left: 478},
+  {id: 33, top: 166, left: 474},
+  {id: 34, top: 130, left: 518},
+  {id: 35, top: 98, left: 528},
+  {id: 36, top: 140, left: 550},
+  {id: 37, top: 94, left: 598},
+  {id: 38, top: 124, left: 598},
+  {id: 39, top: 152, left: 588},
+  {id: 40, top: 134, left: 636},
+  {id: 41, top: 134, left: 676},
+  {id: 42, top: 152, left: 656},
+  {id: 43, top: 180, left: 574},
+  {id: 44, top: 180, left: 540},
+  {id: 45, top: 196, left: 496},
+  {id: 46, top: 184, left: 430},
+  {id: 47, top: 214, left: 526},
+  {id: 48, top: 208, left: 440},
+  {id: 49, top: 198, left: 400},
+  {id: 50, top: 216, left: 330},
+  {id: 51, top: 20, left: 280},
+  {id: 52, top: 298, left: 246},
+  {id: 53, top: 382, left: 190},
+  {id: 54, top: 382, left: 218},
+  {id: 55, top: 410, left: 228},
+  {id: 56, top: 500, left: 248},
+  {id: 57, top: 428, left: 278},
+  {id: 58, top: 39, left: 340},
+  {id: 59, top: 36, left: 322},
+  {id: 60, top: 390, left: 384},
+  {id: 61, top: 374, left: 398},
+  {id: 62, top: 348, left: 396},
+  {id: 63, top: 310, left: 358},
+  {id: 64, top: 290, left: 320},
+  {id: 65, top: 272, left: 372},
+  {id: 66, top: 314, left: 410},
+  {id: 67, top: 288, left: 420},
+  {id: 68, top: 264, left: 416},
+  {id: 69, top: 244, left: 400},
+  {id: 70, top: 246, left: 434},
+  {id: 71, top: 246, left: 455},
+  {id: 72, top: 272, left: 450},
+  {id: 73, top: 298, left: 450},
+  {id: 74, top: 320, left: 468},
+  {id: 75, top: 354, left: 420},
+  {id: 76, top: 357, left: 448},
+  {id: 77, top: 362, left: 474},
+  {id: 78, top: 344, left: 502},
+  {id: 79, top: 344, left: 528},
+  {id: 80, top: 246, left: 496},
+  {id: 81, top: 226, left: 546},
+  {id: 82, top: 270, left: 526},
+  {id: 83, top: 258, left: 550},
+  {id: 84, top: 328, left: 556},
+  {id: 85, top: 282, left: 574},
+  {id: 86, top: 262, left: 572},
+  {id: 87, top: 246, left: 590},
+  {id: 88, top: 250, left: 648},
+  {id: 89, top: 226, left: 644},
+  {id: 90, top: 208, left: 666},
+  {id: 91, top: 150, left: 690},
+  {id: 92, top: 110, left: 718},
+  {id: 93, top: 76, left: 776},
+  {id: 94, top: 170, left: 780}
+  ];
+
+  // เก็บชื่อสถานที่
+  const places = {
+    1: "ปั้มแลนด์ม่วง ",
+    2: "ตึกกระจก",
+    3: "ลานกิจกรรม",
+    4: "แลนด์เขียว",
+    5: "แลนด์ม่วง",
+    6: "สุสาน",
+    7: "4 แยกสุสาน",
+    8: "หน้าสนามกอล์ฟ",
+    9: "หลังสนามกอล์ฟ",
+    10: "แลนด์เทา",
+    11: "เชฟเก่า",
+    12: "งัดร้านคลินตั้น",
+    13: "ปั้มคลินตั้น",
+    14: "ธนาคารใหญ่",
+    15: "มอนิ่งวูตตึกใน",
+    16: "โค้งเบซิตี้",
+    17: "บ้านข้างแลนด์ม่วง",
+    18: "ถนนเบซิตี้",
+    19: "ผับ",
+    20: "สวนสนุก",
+    21: "หน้าสวนสนุก",
+    22: "อุโมงตึกรุ้ง",
+    23: "4 แยกมอนิ่งวูต",
+    24: "มอนิ่งวูตตึกนอก",
+    25: "โรงหนัง",
+    26: "ตึกรุ้ง",
+    27: "ตึกทรู",
+    28: "จกแคปวอท",
+    29: "สภาเก่า",
+    30: "อู่กลางเมือง",
+    31: "กสิกรหลังอู่",
+    32: "อุโมงพารากอน",
+    33: "พาราก้อน",
+    34: "ร้านตัดผมแลนด์ส้ม",
+    35: "เส้นตกแมพ",
+    36: "ร้านเสื้อผ้าแลนด์ส้ม",
+    37: "ที่ทำการ",
+    38: "หลังแลนด์ส้ม",
+    39: "แลนด์ส้ม",
+    40: "อู่ลุงไก่",
+    41: "ลอสซานโตส",
+    42: "หมายาว",
+    43: "ไอแฮฟ",
+    44: "ตึกลงไหล",
+    45: "สนามหญ้าหลงไหล",
+    46: "จกแคปโรงพยาบาล",
+    47: "ฟรีเวย์โรงพยาบาลFAM",
+    48: "รอยเเตกเหินขยะ",
+    49: "เหินขยะ",
+    50: "ฟรีเวย์ตึกรุ้ง",
+    51: "สีเเยกตึกรุ้ง",
+    52: "ร้านเเดง",
+    53: "ริมเลร้านหน้ากาก",
+    54: "ลานสเก็ตร้านหน้ากาก",
+    55: "ร้านหน้ากาก",
+    56: "หอเตือนภัย",
+    57: "3แยกแลนด์ชมพู",
+    58: "เเลนด์ฟ้า",
+    59: "เส้นหลังแลนด์ฟ้า",
+    60: "เหินโอเวอร์",
+    61: "ปั้มโอเวอร์",
+    62: "คาลาอีส",
+    63: "ปั้มพาโล",
+    64: "ศาลาแดง",
+    65: "ตึกเตี้ย",
+    66: "ตึกปูนปิด",
+    67: "รอยแตก24",
+    68: "ตึก24",
+    69: "100เสา",
+    70: "รอยเเตกตึกเเดง",
+    71: "หลังตึกแดง",
+    72: "ตึกเเดง",
+    73: "การาจกลาง",
+    74: "จอปเซนเตอร์",
+    75: "เหินใหญ่",
+    76: "โม่ปูน",
+    77: "ป้าเเต๋วเลนสวน",
+    78: "ร้านรถมือ1",
+    79: "ตึกปืน",
+    80: "เหินอุโมง Arcadius",
+    81: "ไฮพาวเวอร์",
+    82: "โรพาวเวอร์",
+    83: "อุโมง NTR",
+    84: "กสิกรแลนมาร์ค",
+    85: "แลนมาร์ค",
+    86: "ลานจอดรถ NTR",
+    87: "อุโมงรพ FAM",
+    88: "เหินถังขาว",
+    89: "เหิน 180",
+    90: "เหินระเบิด",
+    91: "สนามบอล",
+    92: "แลนน้ำเงิน",
+    93: "สนามม้า",
+    94: "ปั้มหอย"
+    
+  };
+
+  // วาดจุดลงแผนที่
+  const mapContainer = document.querySelector(".map-container");
+  points.forEach(p => {
+  const div = document.createElement("div");
+  div.className = "point";
+  div.style.top = p.top + "px";
+  div.style.left = p.left + "px";
+  div.style.width = p.size + "px";
+  div.style.height = p.size + "px";
+  div.style.fontSize = (p.size * 0.6) + "px"; // ขนาดตัวเลขตามวงกลม
+  div.innerText = p.id;
+  div.onclick = () => showInfo(p.id);
+  mapContainer.appendChild(div);
+});
+
+  function showInfo(id) {
+    const popup = document.getElementById("popup");
+    const text = document.getElementById("popup-text");
+    text.innerText = "จุดที่ " + id + ": " + (places[id] || "ยังไม่มีข้อมูล");
+    popup.classList.add("show");
+  }
+
+  function closePopup() {
+    const popup = document.getElementById("popup");
+    popup.classList.remove("show");
+    
+  }
+</script>
+
+</body>
+</html>
